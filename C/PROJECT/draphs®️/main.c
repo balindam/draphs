@@ -2,36 +2,11 @@
 #include<stdlib.h>
 #include<string.h>
 #include<math.h>
+#include<student.h>
+#include<teacher.h>
+#include<structure.h>
 
-struct date              //structure for date
-{
-    int day;
-    int month;
-    int year;
-};
-
-struct student          //structure for student details
-{
-    char name[20];
-    int enroll;
-    char gender;
-    struct date dob;
-    char blood_grp[3];
-    char batch[3];
-};
-
-struct node
-{
-    int enrollno;
-    int year;
-    int sem;
-    char exam[2];
-    char subject[10];
-    int marks;
-    struct node *next;
-};
-
-struct node *first=NULL;
+struct node *first1=NULL;
 
 void password_student();
 void password_teacher();
@@ -43,23 +18,31 @@ void display_detail();
 
 void main()
 {
-    printf("1. Student login \n2. Teacher login\n");
-    scanf("%d",&ch);
-    if(ch==1)
-    {
-        password_student();
-    }
-    else if(ch==2)
-    {
-        password_teacher();
-    }
-    else
-    {
-        printf("Wrong choice!!\n");
-    }
+    int ch;
+    printf("Enter the choice\n");
+    label1:
+        printf("1. Student login \n2. Teacher login\n 3. Exit\n");
+        scanf("%d",&ch);
+        if(ch==1)
+        {
+            student_main();
+            goto label1;
+        }
+        else if(ch==2)
+        {
+            teacher_main();
+            goto label1;
+        }
+        else if
+        {
+            printf("Thank You\n");
+        }
+        else
+        {
+            printf("Wrong choice!! please enter the right choice\n");
+            goto label1;
+        }
+    //exit of main statement
 }
-void password_student()
-{
-    int enroll;
-    scanf
-}
+
+
