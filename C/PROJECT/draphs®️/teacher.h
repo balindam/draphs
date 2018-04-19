@@ -3,6 +3,18 @@
 
 void teacher_main();
 
+void append_node_marks(int e,int y,int s,int t,struct node_exam *newnode);
+
+void create_node_marks();
+
+void append_node(struct node *newnode);
+
+void create_node();
+
+void update_marks();
+
+void append_marks();
+
 void add_student_node();
 
 void search_student();
@@ -11,6 +23,8 @@ void delete_student();
 
 void avg_marks();
 
-void password_teacher();
+int password_teacher();
+
+void tranfer();
 
 #endif // TEACHER_H_INCLUDED

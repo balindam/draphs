@@ -36,7 +36,7 @@ void student_main()
             label2:
                 printf("1. Menu \n2.Logout \");
                 scanf("%d",&choice);
-                if(choice!=1||choice!=2)
+                if(choice!=1&&choice!=2)
                 {
                     printf("Wrong choice please enter the right option\n");
                     goto label2;
