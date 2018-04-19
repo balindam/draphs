@@ -4,7 +4,6 @@
 #include<math.h>
 #include<student.h>
 #include<teacher.h>
-#include<structure.h>
 
 
 void password_student();

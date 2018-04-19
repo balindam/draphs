@@ -2,7 +2,43 @@
 #include<stdlib.h>
 #include<string.h>
 #include<math.h>
-#include<structure.h>
+
+
+struct date              //structure for date
+{
+    int day;
+    int month;
+    int year;
+};
+
+struct student          //structure for student details
+{
+    char name[20];
+    int enroll;
+    char gender;
+    struct date dob;
+    char blood_grp[3];
+    char batch[3];
+};
+
+struct node
+{
+    int enrollno;
+    int year;
+    int sem;
+    int test;
+    struct node *next_exam;
+    struct node *next;
+};
+
+struct node_exam
+{
+    char subject[10];
+    int marks;
+    struct node_exam *next;
+};
+
+
 
 struct node *first=NULL;
 
@@ -63,19 +99,19 @@ void append_node_marks(int e,int y,int s,int t,struct node_exam *newnode)
     trans1=newnode;
     struct node *temp;
     struct node_exam *temp1;
-    temp=first1;
+    temp=first;
     while((temp->enrollno==e)&&(temp->year==y)&&(temp->sem==s)&&(temp->test==t))
     {
         temp=temp->next;
     }
     trans2=temp;
-    if(first1->next_exam==NULL)
+    if(first->next_exam==NULL)
     {
-        first1->next_exam = newnode;
+        first->next_exam = newnode;
     }
     else
     {
-        temp1=first1->next_exam;
+        temp1=first->next_exam;
         while(temp1->next!=NULL)
         {
             temp1=temp1->next;
@@ -111,14 +147,14 @@ void create_node_marks()
 void append_node(struct node *newnode)
 {
     struct node *temp;
-    if(first1==NULL)
+    if(first==NULL)
     {
-        first1=newnode;
-        first1->next=NUlL;
+        first=newnode;
+        first->next=NUlL;
     }
     else
     {
-        temp=first1;
+        temp=first;
         while(temp->next!=NULL)
         {
             temp=temp->next;
@@ -151,7 +187,7 @@ void create_node()
 void update_marks()
 {
     struct node *temp1,*temp2;
-    temp1=first1;
+    temp1=first;
     int e,y,s,t,m;
     char sub[10];
     printf("Enter the enrollment number\n");
@@ -214,7 +250,7 @@ void search_student()
 {
     int i,e;
     struct node *temp1,*temp2;
-    temp1=first1;
+    temp1=first;
     printf("enter enrollment number of the student: ")
     scanf("%d",&e);
     printf("enrollment number of the student is %d\n",enrollno);
@@ -246,11 +282,11 @@ void delete_student()
     struct node *temp,*prev,*ahead;
     printf("Enter the student enrollment number to be deleted\n");
     scanf("%d",&e);
-    temp=first1;
+    temp=first;
     if(temp->next==NULL)
     {
         free(temp);
-        first1=NULL;
+        first=NULL;
     }
     else
     {
@@ -262,7 +298,7 @@ void delete_student()
                 if(prev==NULL)
                 {
                     free(temp);
-                    first1=ahead;
+                    first=ahead;
                     break;
                 }
                 else
@@ -291,7 +327,7 @@ void avg_marks()
     int m=0;
     float avg;
     struct node *temp1,*temp2;
-    temp1=first1;
+    temp1=first;
     while(temp1!=NULL)
     {
         temp2=temp1->next_exam;
@@ -334,7 +370,7 @@ void writetofile()
     fp=fopen("data.txt","w");
     struct node *temp1;
     struct node_exam *temp2;
-    temp1=first1;
+    temp1=first;
     temp2=temp1->next_exam;
     while(temp1!=NULL)
     {
