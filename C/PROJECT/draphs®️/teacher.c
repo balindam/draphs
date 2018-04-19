@@ -4,11 +4,7 @@
 #include<math.h>
 #include<structure.h>
 
-struct node_exam *trans1=NULL;
-
-struct node_exam *trans2=NULL;
-
-extern struct node *first1;
+struct node *first=NULL;
 
 void teacher_main()
 {
@@ -17,6 +13,7 @@ void teacher_main()
     result = password_teacher();
     if(result==1)
     {
+        fileread();
         do
         {
             printf("Enter any of the following options\n");
@@ -58,6 +55,7 @@ void teacher_main()
                     }
             }while(choice==1);
         }
+        writetofile();
 }
 
 void append_node_marks(int e,int y,int s,int t,struct node_exam *newnode)
@@ -84,14 +82,13 @@ void append_node_marks(int e,int y,int s,int t,struct node_exam *newnode)
         }
         temp1->next=newnode;
     }
-    tranfer();
 }
 
 void create_node_marks()
 {
     struct node_exam *newnode;
     newnode = (struct node *)malloc(sizeof(struct node));
-    char s[10];
+    char sub[10];
     int m;
     int e,t,y,s;
     printf("Enter the enrollment number\n");
@@ -103,10 +100,10 @@ void create_node_marks()
     printf("Enter the test\n");
     scanf("%d",&t);
     printf("Enter the subject\n");
-    scanf("%s",&s);
+    scanf("%s",sub);
     printf("Enter the marks\n");
     scanf("%d",&m);
-    strcpy(newnode->subject,s);
+    strcpy(newnode->subject,sub);
     newnode->marks=m;
     append(e,y,s,t,newnode);
 }
@@ -128,6 +125,7 @@ void append_node(struct node *newnode)
         }
         temp->next=newnode;
     }
+    create_node_marks();
 }
 
 void create_node()
@@ -152,45 +150,52 @@ void create_node()
 
 void update_marks()
 {
-    struct node *temp1;
-    char subject[10];
-    int en,i,m;
+    struct node *temp1,*temp2;
+    temp1=first1;
+    int e,y,s,t,m;
+    char sub[10];
     printf("Enter the enrollment number\n");
-    scanf("%d",&enrollno);
+    scanf("%d",&e);
     printf("Enter the year\n");
-    scanf("%d",&year);
+    scanf("%d",&y);
     printf("Enter the semester\n");
-    scanf("%d",&sem);
+    scanf("%d",&s);
     printf("Enter the test\n");
-    scanf("%d",&test);
+    scanf("%d",&t);
     printf("Enter the subject\n");
-    scanf("%s",&subject);
-    while(first->next!=NULL)
+    scanf("%s",sub);
+    while(temp1!=NULL)
     {
-        if(year==node->year && sem==node->sem && enrollno==node->enrollno && test==node->test)
+        if(temp1->year==y && temp1->sem==s && temp1->enrollno==e && temp1->test==t)
         {
             break;
         }
         else
         {
-            first=first->next;
+            if(temp1->next!=NULL)
+                temp1=temp1->next;
+            else
+                break;
         }
     }
-    temp1=first->next_exam;
-    while(temp->next!=NULL)
+    temp2=temp1->next_exam;
+    while(temp2!=NULL)
     {
-        if(strcmp(temp1->subject,subject))
+        if(strcmp(temp2->subject,sub)==0)
         {
             break;
         }
         else
         {
-            temp1=temp1->next;
+            if(temp2->next!=NULL)
+                temp2=temp2->next;
+            else
+                break;
         }
     }
     printf("Enter new marks: \n");
     scanf("%d",&m);
-    temp1->marks=m;
+    temp2->marks=m;
 }
 
 void append_marks()
@@ -207,26 +212,30 @@ void add_student_node()
 
 void search_student()
 {
-    int i,enrollno;
+    int i,e;
     struct node *temp1,*temp2;
-    temp2=first1;
+    temp1=first1;
     printf("enter enrollment number of the student: ")
-    scanf("%d",&enrollno);
+    scanf("%d",&e);
     printf("enrollment number of the student is %d\n",enrollno);
-    while(temp2->next!=NULL)
+    while(temp1!=NULL)
     {
-        temp1=temp2->next_exam;
-        if(temp2->enrollno==enrollno)
+        temp2=temp1->next_exam;
+        if(temp1->enrollno==e)
         {
-            while(temp1->next!=NULL)
+            while(temp2!=NULL)
             {
-                printf("marks of the student in the subject %s is %d in the exam T%d in semester %d\n",temp1->subject,temp1->marks,temp2->test,temp2->sem);
-                temp1=temp1->next;
+                printf("Marks of the student in the subject %s is %d in the exam T%d in semester %d\n",temp2->subject,temp2->marks,temp1->test,temp1->sem);
+                temp2=temp2->next;
             }
         }
         else
         {
-            temp2=temp2->next;
+            if(temp1->next==NULL)
+            {
+                break;
+            }
+            temp1=temp1->next;
         }
     }
 }
@@ -234,110 +243,137 @@ void search_student()
 void delete_student()
 {
     int e;
-    struct node *temp,*temp1;
+    struct node *temp,*prev,*ahead;
     printf("Enter the student enrollment number to be deleted\n");
     scanf("%d",&e);
     temp=first1;
-    temp1=temp->next;
-    if(temp->enrollno==e)
+    if(temp->next==NULL)
     {
-        first1=first1->next;
         free(temp);
+        first1=NULL;
     }
     else
     {
-    while(1)
-    {
-        if(temp1->enrollno==e)
+        ahead=temp->next;
+        while(ahead!=NULL)
         {
-            break;
-        }
-        else{
+            if(temp->enrollno==e)
+            {
+                if(prev==NULL)
+                {
+                    free(temp);
+                    first1=ahead;
+                    break;
+                }
+                else
+                {
+                    prev->next=ahead;
+                    free(temp);
+                    break;
+                }
+            }
+            prev=temp;
             temp=temp->next;
-            temp1=temp->next;
+            if(ahead->next!=NULL)
+                ahead=ahead->next;
+            else
+                break;
         }
-    }
-
-    temp->next=temp1->next;
-    free(temp1);
     }
 }
 
 void avg_marks()
 {
-    char subject[10];
+    char sub[10];
+    printf("Enter the subject\n");
+    scanf("%s",sub);
     int count=1;
-    float m=0.0,avg;
+    int m=0;
+    float avg;
     struct node *temp1,*temp2;
-    temp2=first1;
-    while(temp2->next!=NULL)
+    temp1=first1;
+    while(temp1!=NULL)
     {
-        temp1=temp2->next_exam;
-        while(temp1->next!=NULL)
+        temp2=temp1->next_exam;
+        while(temp2->next!=NULL)
         {
-            if(strcmp(temp1->subject,subject))
+            if(strcmp(temp2->subject,sub)==0)
             {
                 break;
             }
             else
             {
-                temp1=temp1->next;
+                temp2=temp2->next;
             }
         }
-        m=m+temp1->marks;
-        temp2=temp2->next;
-        count++;
-    }
-    avg=m/count;
-    printf("Average marks of all student in subject &s is &d\n",temp1->subject,avg);
-}
-
-void transfer()
-{
-    int e,y,s,m;
-    char sub[10];
-    e=trans1->enrollno;
-    y=trans1->year;
-    s=trans1->sem;
-    m=trans2->marks;
-    strcpy(sub,trans2->subject);
-    FILE *fp;
-    fp=open("data.txt","r+");
-    while(fgetc(fp)!=EOF)
-    {
-
-    }
-    struct node *temp1,temp2;
-    temp1=first1;
-    temp2=first1;
-    while(temp1->next!=NULL)
-    {
-        while(temp2->next!=NULL)
+        if(strcmp(temp2->subject,sub)==0)
         {
-
+            m=m+temp2->marks;
+            count++;
+            if(temp1->next!=NULL)
+                temp1=temp1->next;
+            else
+                break;
         }
     }
+    avg=(float)m/count;
+    printf("Average marks of all student in subject %s is %f\n",sub,avg);
+}
+
+void fileread()
+{
+    FILE *fp;
+    fp=fopen("data.txt","r");
+    struct node *temp1;struct node_exam *temp2;
+
+    while(f)
+}
+void writetofile()
+{
+    FILE *fp;
+    fp=fopen("data.txt","w");
+    struct node *temp1;
+    struct node_exam *temp2;
+    temp1=first1;
+    temp2=temp1->next_exam;
+    while(temp1!=NULL)
+    {
+        while(temp2!=NULL)
+        {
+            fprintf(fp,"%d %d %d %d ",temp1->enrollno,temp1->year,temp1->sem,temp1->test);
+            fprintf(fp,"%s %d ",temp2->subject,temp2->marks);
+            if(temp2->next!=NULL)
+                temp2=temp2->next;
+            else
+                break;
+        }
+        if(temp1->next!=NULL)
+            temp1=temp1->next;
+        else
+            break;
+    }
+fclose(fp);
 }
 
 int password_teacher()
 {
     char user[5];
     printf("Enter the username\n");
-    scanf("%s",&user);
+    scanf("%s",user);
     FILE *fp;
     char str[7];
     fp=fopen("password_teacher.txt","r");
     int i=0;
-    char u[6]
+    char u[5]
     while(1)
     {
-        fgets(u,5,fp);
-        if(strcmp(u,user)==0)
+        while(fscanf(fp,"%s %s ",u,str)!=EOF)
         {
-            break;
+            if(strcmp(u,user)==0)
+            {
+                break;
+            }
         }
-    }
-    fgets(str,6,fp);
     printf("Enter the password");
     int c=0;
     char pass[7];
@@ -358,4 +394,5 @@ int password_teacher()
         printf("Invalid password\n");
         return 0;
     }
+    fclose(fp);
 }

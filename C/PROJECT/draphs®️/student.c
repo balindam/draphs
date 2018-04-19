@@ -4,7 +4,7 @@
 #include<math.h>
 #include<structure.h>
 
-extern struct node *first1;
+int enroll;
 
 void student_main()
 {
@@ -47,32 +47,55 @@ void student_main()
 
 void generate_marksheet()
 {
-
+    int e,y,s,t,m;char sub[10];
+    FILE *fp;
+    fp=fopen("data.txt","r");
+    while(fscanf(fp,"%d %d %d %d %s %d ",&e,&y,&s,&t,sub,&m)!=EOF)
+    {
+        if(e==enroll)
+        {
+            printf("Enrollment no.- %d\n Year - %d\n Semester - %d\n Test - %d\n Subject - %s\n Marks - %d\n",e,y,s,t,sub,m);
+        }
+    }
+    fclose(fp);
 }
 
-void change_password()
+void change_password(int en)
 {
-
+    int enroll;char str1[6];
+    FILE *fp;
+    fp=fopen("password_student.txt","r+");
+    while(fscanf(fp,"%d ",&enroll)!=EOF)
+    {
+        if(enroll==en)
+        {
+            printf("Enter the new password\n");
+            scanf("%s",str1);
+            fwrite(fp,"%s ",str1);
+        }
+        else
+        {
+            fscanf(fp,"%s ",str);
+        }
+    }
 }
 
 int password_student()
 {
-    int enroll;
+
     printf("Enter the enrollment number\n");
     scanf("%d",&enroll);
-    int l;
-    l=enroll%100;
     FILE *fp;
-    char str[7];
+    char str[6];
     fp=fopen("password_student.txt","r");
-     while(l--)
-    {
-        fgets(str,6,fp);
-    }
     printf("Enter the password");
-    int c=0;
+    int c=0;int e;
     char pass[7];
-
+    while(fscanf(fp,"%d %s ",&e,str)!=EOF)
+    {
+        if(e==enroll)
+            break;
+    }
     while(c!=6)
     {
         scanf("%c",&pass[c]);
@@ -90,4 +113,5 @@ int password_student()
         printf("Invalid password\n");
         return 0;
     }
+    fclose(fp);
 }

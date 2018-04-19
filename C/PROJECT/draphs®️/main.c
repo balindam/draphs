@@ -6,7 +6,6 @@
 #include<teacher.h>
 #include<structure.h>
 
-struct node *first1=NULL;
 
 void password_student();
 void password_teacher();

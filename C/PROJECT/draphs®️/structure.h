@@ -39,3 +39,7 @@ struct node_exam
 
 
 #endif // STRUCTURE_H_INCLUDED
+
+
+
+#endif // STRUCTURE_H_INCLUDED
