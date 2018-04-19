@@ -2,17 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<math.h>
-#include<student.h>
-#include<teacher.h>
-
-
-void password_student();
-void password_teacher();
-struct create_node(struct node *);
-struct append_node(struct node *);
-void display_detail();
-
-
+#include "teacher.h"
 
 void main()
 {
@@ -31,7 +21,7 @@ void main()
             teacher_main();
             goto label1;
         }
-        else if
+        else if(ch==3)
         {
             printf("Thank You\n");
         }
@@ -42,5 +32,6 @@ void main()
         }
     //exit of main statement
 }
+
 
 
