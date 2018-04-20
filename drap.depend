@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1524191319 source:c:\users\asus\desktop\c\project\drap\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	"teacher.h"
+
+1524159431 c:\users\asus\desktop\c\project\drap\teacher.h
+
+1524191553 source:c:\users\asus\desktop\c\project\drap\student.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	"teacher.h"
+
+1524191486 source:c:\users\asus\desktop\c\project\drap\teacher.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	"teacher.h"
+
